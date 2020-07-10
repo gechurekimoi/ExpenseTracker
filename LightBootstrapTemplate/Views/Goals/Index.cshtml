@@ -1,0 +1,84 @@
+﻿@model IEnumerable<LightBootstrapTemplate.Models.Goal>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Goals = "true";
+
+
+}
+
+
+<div class="card-header">
+    <p>
+        <a href="@Url.Action("IndexGoals")" class="btn btn-sm btn-primary btn-fill"> View all Goals</a>
+        <a href="@Url.Action("Create")" class="btn btn-sm btn-primary btn-fill"> Add Goal</a>
+    </p>
+
+
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-4" style="height:250px; overflow-y:scroll;margin-top:10px;">
+            <div class="">
+                
+                <label class="control-label">Todays Goals</label>
+            </div>
+            <div class="">
+                <table class="table table-striped">
+                    @foreach (var item in Model)
+                    {
+                        
+                        if(item.typeGoal=="Daily")
+                        {
+                            <tr>
+                                <td>@item.Description</td>
+                            </tr>
+                        }
+	                  
+                    }
+                   
+                </table>
+            </div>
+        </div>
+        <div class="col-sm-4" style="height:200px; overflow-y:scroll;margin-top:20px;">
+            <div class="">
+                <label class="control-label">This month Goals</label>
+            </div>
+            <table class="table table-striped">
+                @foreach (var item in Model)
+                {
+
+                    if (item.typeGoal == "Monthly")
+                    {
+                        <tr>
+                            <td>@item.Description</td>
+                        </tr>
+                    }
+
+                }
+
+            </table>
+        </div>
+        <div class="col-sm-4" style="height:200px; overflow-y:scroll; margin-top:20px;">
+            <div class="">
+                <label class="control-label">This Year Goals</label>
+            </div>
+            <table class="table table-striped">
+                @foreach (var item in Model)
+                {
+
+                    if (item.typeGoal == "Yearly")
+                    {
+                        <tr>
+                            <td>@item.Description</td>
+                        </tr>
+                    }
+
+                }
+
+            </table>
+        </div>
+    </div>
+</div>

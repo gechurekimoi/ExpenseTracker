@@ -1,0 +1,107 @@
+﻿@model IEnumerable<LightBootstrapTemplate.ViewModel.Subtotals>
+@using System.Collections;
+@using LightBootstrapTemplate.Models;
+
+@{ 
+
+    var totalAmount = 0.0;
+    List<Income> incomes = new List<Income>();
+
+    incomes = (List<Income>)ViewBag.TotalIncome;
+    var totalIncome = 0.0;
+    var balance = 0.0;
+}
+
+
+
+<div class="table-responsive">
+    <h4>
+        Income
+    </h4>
+    <table class="table table-full-width" ">
+        <thead>
+            <tr class="table-primary">
+                <th>Date</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (incomes.Count() > 0)
+            {
+                foreach (var item in incomes)
+                {
+                    <tr>
+                        <td>@item.DateReceived.ToString("dd-MMM-yyyy")</td>
+                        <td>@item.Amount.ToString("N2")</td>
+                    </tr>
+                    totalIncome += item.Amount;
+                }
+                <tr class="table-info">
+                    <td>Total Income</td>
+                    <td>@totalIncome.ToString("N2")</td>
+                </tr>
+            }
+            else
+            {
+                <tr>
+                    <td colspan="2">
+                        No income recorded this month
+                    </td>
+                </tr>
+            }
+
+
+        </tbody>
+    </table>
+
+    <br/>
+    <br/>
+
+    <h4>
+        Expenses
+    </h4>
+    <table class="table table-full-width">
+        <tr class="table-primary">
+            <th>Category</th>
+            <th>Amount</th>
+        </tr>
+
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.name</td>
+                <td>@item.Amount</td>
+            </tr>
+            {
+                totalAmount += item.Amount;
+            }
+
+        }
+        <tfoot>
+            <tr class="table-info">
+                <td>Total Amount</td>
+                <td>@totalAmount</td>
+            </tr>
+        </tfoot>
+    </table>
+
+    @{ 
+        if(totalIncome>0)
+        {
+            balance = totalIncome - totalAmount;
+        }
+        else
+        {
+            balance = 0 - totalAmount;
+        }
+
+    }
+    <div>
+        Balance : Ksh. @balance.ToString("N2")
+    </div>
+
+    <div>
+        <img src="@Url.Action("PieChartAnalysis","Expenses")" class=".img-fluid" alt="Graph Chart on spending" style="max-width: 100%; height: auto;" />
+    </div>
+</div>

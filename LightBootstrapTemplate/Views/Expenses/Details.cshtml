@@ -1,0 +1,67 @@
+﻿@model LightBootstrapTemplate.Models.Expenses
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Expense = "true";
+}
+
+
+<div class="card-header">
+    <div class="card-title">
+        <h4>Details</h4>
+    </div>
+</div>
+
+<div class="card-body">
+    
+    <div>
+        <h4>Expenses</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Category.Name)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Category.Name)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Description)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Description)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.DateSpent)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.DateSpent)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Amount)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Amount)
+            </dd>
+
+        </dl>
+    </div>
+    <p>
+        @Html.ActionLink("Back to List", "Index",null,htmlAttributes: new { @class = "btn btn-primary btn-fill btn-xs pull-left" })
+
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Id },htmlAttributes:new { @class= "btn btn-primary btn-fill btn-xs pull-right",@style="margin:1px;" }) 
+        @Html.ActionLink("Delete", "Delete", new { id = Model.Id },htmlAttributes: new { @class = "btn btn-danger btn-fill btn-xs pull-right",@style="margin:1px;" })
+
+
+        @*@Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-sm btn-primary" })*@
+        @*@Html.ActionLink("", "Delete", new { id = item.Id }, new { @class = "btn btn-sm btn-primary" })*@
+    </p>
+
+</div>

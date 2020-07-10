@@ -1,0 +1,55 @@
+﻿
+@model IEnumerable<LightBootstrapTemplate.Models.Diary>
+
+@{
+    ViewBag.Title = "IndexDiary";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Diary = "true";
+}
+
+
+@*<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />*@
+<link href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+
+
+
+
+<div class="container">
+
+    <div class="card-header">
+        <div class="card-title">
+            <h4>My Diary Entries</h4>
+        </div>
+    </div>
+
+
+    <div class="card-body table-full-width table-responsive">
+
+        <div class="row">
+            <a href="@Url.Action("CreateDiary")" class="btn btn-primary btn-fill pull-right">Add New Diary Entry</a>
+            <br/>
+        </div>
+
+        <div class="row">
+            @await Html.PartialAsync("~/Views/Expenses/_lstDiary.cshtml", Model)
+        </div>
+
+    </div>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap.min.js"></script>
+
+<script>
+
+    $(document).ready(function () {
+        $('#tblEntries').DataTable({
+            "ordering": false
+        });
+    })
+
+</script>
+
+

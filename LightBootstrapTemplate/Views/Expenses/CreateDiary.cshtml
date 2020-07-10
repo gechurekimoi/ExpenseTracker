@@ -1,0 +1,65 @@
+﻿@model LightBootstrapTemplate.Models.Diary
+
+@{
+    ViewBag.Title = "Create Diary";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Diary = "true";
+}
+
+<div class="card-header">
+    <div class="card-title">
+        <h4>Add New Thought</h4>
+    </div>
+    <hr />
+</div>
+
+<div class="card-body table-responsive">
+    @using (Html.BeginForm("CreateDiary"))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", autocomplete="off" } })
+                    @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Thoughts, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-12">
+                    <textarea class="form-control text-box" style="height:250px" id="Thoughts" name="Thoughts" type="text" value="">
+                    </textarea>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-12">
+                    <div class="pull-right">
+                        <input type="submit" value="Create" class="btn btn-fill btn-sm btn-primary" />
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    }
+
+    <div style="margin-left:15px;">
+        @Html.ActionLink("Back to List", "IndexDiary")
+    </div>
+
+</div>
+
+@section scripts{
+
+    <script src="~/Scripts/ckeditor/ckeditor.js"></script>
+
+    <script>
+        CKEDITOR.replace('Thoughts');
+    </script>
+
+
+}

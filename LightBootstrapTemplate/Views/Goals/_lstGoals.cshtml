@@ -1,0 +1,42 @@
+﻿@model IEnumerable<LightBootstrapTemplate.Models.Goal>
+
+<table class="table table-striped">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.DateSet)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.typeGoal)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateToBeAchieved)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @item.DateSet.ToString("dd-MMM-yyyy")
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.typeGoal)
+            </td>
+            <td>
+                @item.DateToBeAchieved.ToString("dd-MMM-yyyy")
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+    }
+</table>

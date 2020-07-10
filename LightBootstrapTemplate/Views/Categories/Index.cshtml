@@ -1,0 +1,48 @@
+﻿@model IEnumerable<LightBootstrapTemplate.Models.Category>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Categories = "true";
+}
+
+<style>
+    .btn {
+        margin:2px;
+    }
+</style>
+
+<div class="card-header">
+    <div class="card-title">
+        <a href="@Url.Action("Create","Categories")" class="btn btn-primary btn-fill btn-sm">Add New Category</a>
+    </div>
+</div>
+
+<div class="card-body table-full-width table-responsive">
+   
+    <table class="table table-hover table-striped">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id },new{ @class="btn btn-sm btn-primary"}) 
+                    @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-sm btn-primary" }) 
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-sm btn-primary" })
+                </td>
+            </tr>
+        }
+
+    </table>
+
+</div>
+

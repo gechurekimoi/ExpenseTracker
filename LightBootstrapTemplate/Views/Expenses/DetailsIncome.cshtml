@@ -1,0 +1,36 @@
+﻿@model LightBootstrapTemplate.Models.Income
+
+@{
+    ViewBag.Title = "DetailsIncome";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Income = "true";
+}
+
+<h2>DetailsIncome</h2>
+
+<div>
+    <h4>Income</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.DateReceived)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateReceived)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Amount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Amount)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

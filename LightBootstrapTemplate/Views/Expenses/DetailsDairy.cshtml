@@ -1,0 +1,34 @@
+﻿@model LightBootstrapTemplate.Models.Diary
+
+@{
+    ViewBag.Title = "DetailsDairy";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Diary = "true";
+}
+
+
+<div class="card-header">
+    <div class="card-title">
+        <h4>TITLE :<strong> @Model.Title </strong> </h4>
+        <h6>Date written :@Model.EntryDate.ToString("dd-MMM-yyyy")</h6>
+        <hr />
+    </div>
+</div>
+
+<div class="card-body table-responsive">
+    <div class="col-md-12">
+          @Html.Raw(Model.Thoughts)
+           
+    </div>
+    <div class="col-md-12" >
+        <div class="pull-right">
+            @Html.ActionLink("Edit", "EditDiary", new { id = Model.Id }, htmlAttributes: new { @class = "btn btn-info btn-sm btn-fill" })
+            @Html.ActionLink("Delete", "DeleteDiary", new { id = Model.Id }, htmlAttributes: new { @class = "btn btn-danger btn-sm btn-fill" })
+        </div>
+       
+    </div>
+    <br/>
+    <p>   
+     @Html.ActionLink("Back to List", "IndexDiary",null,htmlAttributes:new { @class="btn btn-primary btn-xs"})
+    </p>
+</div>

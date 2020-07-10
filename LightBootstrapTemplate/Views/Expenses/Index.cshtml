@@ -1,0 +1,56 @@
+﻿
+@model IEnumerable<LightBootstrapTemplate.Models.Expenses>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Expense = "true";
+}
+
+
+
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+<link href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+
+
+
+<div class="container">
+    <div class="card-header">
+        <div class="card-title">
+            <h4>List of Expenses</h4>
+        </div>
+    </div>
+
+    <div class="card-body table-full-width table-responsive">
+        <div class="row">
+            <a href="@Url.Action("Create","Expenses")" class="btn btn-primary btn-fill pull-right" style="margin:5px;">Add Expense</a>
+        </div>
+
+        <div class="row">
+            @await Html.PartialAsync("_lstExpenses", Model)
+        </div>
+     
+
+        
+    </div>
+</div>
+
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap.min.js"></script>
+
+<script>
+
+    $(document).ready(function () {
+        $('#tblExpenses').DataTable({
+            "ordering": false
+        });
+    })
+
+
+
+</script>
+
+

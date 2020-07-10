@@ -1,0 +1,78 @@
+﻿@model LightBootstrapTemplate.Models.Diary
+
+@{
+    ViewBag.Title = "EditDiary";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Diary = "true";
+}
+
+<div class="card-header">
+    <div class="card-title">
+        <h4>Edit Thought</h4>
+    </div>
+    <hr />
+</div>
+
+<div class="card-body table-responsive">
+
+    @using (Html.BeginForm("EditDiary"))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.Id)
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.EntryDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.EntryDate, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.EntryDate, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", @autocomplete = "off" } })
+                    @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Thoughts, htmlAttributes: new { @class = "control-label col-md-2" })
+                @*<div class="col-md-10">
+                        @Html.EditorFor(model => model.Thoughts, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Thoughts, "", new { @class = "text-danger" })
+                    </div>*@
+
+                <div class="col-md-12">
+                    <textarea class="form-control text-box" style="height:250px;" id="Thoughts" name="Thoughts" type="text" autocomplete="off">
+                    @Html.Raw(Model.Thoughts)
+                </textarea>
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Save" class="btn btn-primary btn-fill" />
+                </div>
+            </div>
+        </div>
+    }
+
+    <div>
+        @Html.ActionLink("Back to List", "IndexDiary")
+    </div>
+</div>
+
+@section scripts{
+
+<script src="~/Scripts/ckeditor/ckeditor.js"></script>
+
+<script>
+    CKEDITOR.replace('Thoughts');
+</script>    
+    
+}

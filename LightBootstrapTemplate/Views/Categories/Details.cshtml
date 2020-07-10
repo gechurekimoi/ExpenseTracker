@@ -1,0 +1,36 @@
+﻿@model LightBootstrapTemplate.Models.Category
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Categories = "true";
+}
+
+
+
+<div class="card-header">
+    <div class="card-title">
+        <h4>Details</h4>
+    </div>
+</div>
+
+<div class="card-body">
+   <div>
+        <h6>Category</h6>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+
+        </dl>
+    </div>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+    </div>

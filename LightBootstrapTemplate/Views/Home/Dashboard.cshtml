@@ -1,0 +1,273 @@
+﻿
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Dash = "true";
+}
+
+<div class="card-header">
+    <div class="card-title">
+        <h4>Dashboard</h4>
+    </div>
+</div>
+
+
+
+<div class="card-body">
+    <div class="form-group">
+        <div>
+            <select class="form-control" id="selectYear">
+                <option value="2018">2018</option>
+                <option value="2019">2019</option>
+                <option value="2020">2020</option>
+                <option value="2021">2021</option>
+                <option value="2022">2022</option>
+
+            </select>
+        </div>
+    </div>
+    <br />
+    <div class="form-group">
+        <div>
+            <select class="form-control" id="selectMonth">
+                <option value=1>January</option>
+                <option value=2>February</option>
+                <option value=3>March</option>
+                <option value=4>April</option>
+                <option value=5>May</option>
+                <option value=6>June</option>
+                <option value=7>July</option>
+                <option value=8>August</option>
+                <option value=9>September</option>
+                <option value=10>October</option>
+                <option value=11>November</option>
+                <option value=12>December</option>
+            </select>
+        </div>
+    </div>
+
+
+    <div class="col-md-12">
+        <button class="btn btn-primary btn-fill" id="checkExpenses">Check Expenses</button>
+
+    </div>
+    <div id="loader" class="collapse">
+        <img src="~/loader.gif" class="img-circle" />
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div id="monthlyAnalysisChart" style="width:100%; min-height:500px; max-height:700px;">
+
+            </div>
+
+            <div id="yearlyAnalysisChart" style="width:100%; min-height:500px; max-height:700px;">
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12 collapse" id="result">
+        <br />
+
+        <div id="amountSpent">
+            <div class="col-md-6 col-md-offset-3">
+
+            </div>
+
+        </div>
+    </div>
+
+
+</div>
+
+@section scripts{
+
+    <script type="text/javascript" src="~/Scripts/js/core/jquery.3.2.1.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/js/core/popper.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/js/core/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://code.highcharts.com/highcharts.js"></script>
+    <script type="text/javascript"  src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script type="text/javascript" src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script type="text/javascript" src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+            //GetMonthlyAnalysis();
+        })
+
+        var MonthlyChartData = {};
+
+        function GetMonthlyAnalysis() {
+            $.ajax({
+                type: 'GET',
+                url: '/Expenses/GetBarChartForMonthlyExpenseCategories',
+                data: 'json',
+                beforeSend: function () {
+
+                },
+                success: function (obj) {
+                    MonthlyChartData = obj;
+
+                    return obj;
+
+
+                },
+                error: function (x, y, z) {
+                    console.log(x.responseText);
+                    return x.responseText;
+                }
+            })
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+
+            $.ajax({
+                type: 'GET',
+                url: '/Expenses/GetBarChartForMonthlyExpenseCategories',
+                data: 'json',
+                async: false,
+                beforeSend: function () {
+
+                },
+                success: function (obj) {
+                    MonthlyChartData = obj;
+
+                    return obj;
+
+
+                },
+                error: function (x, y, z) {
+                    console.log(x.responseText);
+                    return x.responseText;
+                }
+            })
+
+            console.log(MonthlyChartData);
+
+            var myChart = Highcharts.chart('monthlyAnalysisChart', {
+                chart: {
+                    plotBackgroundColor: null,
+                    plotBorderWidth: null,
+                    plotShadow: false,
+                    type: 'bar'
+                },
+                title: {
+                    text: 'Monthly Expense Comparison'
+                },
+                accessibility: {
+                    point: {
+                        valueSuffix: '%'
+                    }
+                },
+             
+                xAxis: {
+                    //categories: ['Apples', 'Bananas', 'Oranges']
+                    categories: MonthlyChartData.categories
+                },
+                yAxis: {
+                    title: {
+                        text: 'Amount Spent'
+                    }
+                },
+                series: [{
+                    name: 'Amount',
+                    data: MonthlyChartData.data
+                }]
+                //series: [{
+                //    name: 'Jane',
+                //    data: [1, 0, 4]
+                //}, {
+                //    name: 'John',
+                //    data: [5, 7, 3]
+                //}]
+            });
+
+            var yearlyData = {};
+            $.ajax({
+                type: 'GET',
+                url: '/Expenses/GetChartDataForMonthsOfTheYear',
+                data: 'json',
+                async: false,
+                beforeSend: function () {
+
+                },
+                success: function (obj) {
+                    yearlyData = obj;
+
+                    return obj;
+
+
+                },
+                error: function (x, y, z) {
+                    console.log(x.responseText);
+                    return x.responseText;
+                }
+            })
+
+
+            var myChart2 = Highcharts.chart('yearlyAnalysisChart', {
+                chart: {
+                    type: 'line'
+                },
+                title: {
+                    text: 'Yearly Expense Comparison'
+                },
+                xAxis: {
+                    //categories: ['Apples', 'Bananas', 'Oranges']
+                    categories: yearlyData.categories
+                },
+                yAxis: {
+                    title: {
+                        text: 'Amount Spent'
+                    }
+                },
+                series: [{
+                    name: 'Amount',
+                    data: yearlyData.data
+                }]
+
+            });
+
+        });
+
+
+
+
+
+
+        function LoadMonthlyAnalysisChart() {
+
+        }
+
+        $("#checkExpenses").click(function () {
+
+            var year = $("#selectYear").val();
+            var month = $("#selectMonth").val();
+
+            var totalExpenses = { year: year, month: month };
+
+            $.ajax({
+                type: 'POST',
+                url: '/Expenses/GetTotalExpenses',
+                data: totalExpenses,
+                beforeSend: function () {
+
+                    $("#loader").show();
+                },
+                success: function (obj) {
+
+                    console.log(obj);
+                    $("#amountSpent").empty();
+                    $("#amountSpent").html(obj);
+                    $("#result").show();
+                    $("#loader").hide();
+
+                },
+                error: function () { }
+            })
+
+
+        })
+    </script>
+}

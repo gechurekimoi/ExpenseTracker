@@ -1,0 +1,50 @@
+﻿@model IEnumerable<LightBootstrapTemplate.Models.Expenses>
+
+
+<table id="tblExpenses" class="table table-striped table-bordered" width="100%">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Amount)
+            </th>
+            <th>
+                Date
+            </th>
+            <th>
+                Category
+            </th>
+
+            <th>Details</th>
+
+
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Amount)
+                </td>
+                <td>
+                    @item.DateSpent.ToString("dd-MMM-yyyy")
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category.Name)
+                </td>
+
+                <td>
+                    @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-xs btn-info btn-fill" })
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

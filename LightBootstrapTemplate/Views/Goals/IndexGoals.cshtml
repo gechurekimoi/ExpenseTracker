@@ -1,0 +1,74 @@
+﻿
+@model IEnumerable<LightBootstrapTemplate.Models.Goal>
+
+@{
+    ViewBag.Title = "IndexGoals";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Goals = "true";
+}
+
+<style>
+    #pagination ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden; /*background-color: #333;*/
+    }
+
+    #pagination li {
+        /*float: left;*/
+        border-right: 0.5px solid #0094ff;
+        border-top: 0.5px solid #0094ff;
+        border-bottom: 0.5px solid #0094ff;
+    }
+
+        #pagination li a {
+            display: block;
+            color: black;
+            text-align: center;
+            padding: 5px 10px;
+            text-decoration: none;
+        }
+
+            #pagination li a:hover:not(.active) {
+                background-color: #0094ff;
+            }
+
+    #pagination .active {
+        background-color: #0094ff;
+        color: aliceblue;
+    }
+
+    #pagination li a .active {
+        color: white;
+    }
+</style>
+
+<div class="card-header">
+    <div class="card-title">
+        <p>
+            @Html.ActionLink("Add New Goal", "Create", null, htmlAttributes: new { @class = "btn btn-primary btn-sm btn-fill" })
+        </p>
+        <h4>List of all Goals</h4>
+
+    </div>
+</div>
+
+
+
+<div class="card-body table-full-width table-responsive">
+  
+
+    @Html.Partial("~/Views/Goals/_lstGoals.cshtml", Model)
+
+    <div id="pagination" class="">
+        <br />
+        <div class="col-md-6 col-offset-3">
+            <div class="pagination">
+               @*@Html.PagedListPager(Model, page => Url.Action("IndexGoals", new { page }))*@
+            </div>
+        </div>
+
+    </div>
+</div>
+

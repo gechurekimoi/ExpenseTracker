@@ -1,0 +1,193 @@
+﻿@model LightBootstrapTemplate.Models.Goal
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Goals = "true";
+}
+
+<div class="card-header">
+    <div class="card-title">
+        <h4>Add New Goal</h4>
+    </div>
+    <hr />
+</div>
+
+<div class="card-body table-responsive">
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            <label class="control-label col-md-2" for="DateToBeAchieved">Date Set</label>
+            <div class="col-md-12">
+                <input class="form-control text-box single-line" disabled type="text" value="@DateTime.Now.ToString("dd-MMM-yyyy")">
+            </div>
+        </div>
+
+        <div class="form-group">
+            @*@Html.LabelFor(model => model.typeGoal, htmlAttributes: new { @class = "control-label col-md-2" })*@
+            <label class="control-label col-md-2" for="typeGoal">Type of Goal</label>
+            <div class="col-md-12">
+                <div class="">
+                    <label class="radio-inline">
+                        <input type="radio" name="optradio" value="Daily" checked="checked">  Today
+                    </label>
+                    
+                    &nbsp;
+                    &nbsp;
+                    <label class="radio-inline">
+                        <input type="radio" name="optradio" value="Monthly">  This Month
+                    </label>
+
+                    &nbsp;
+                    &nbsp;
+                    <label class="radio-inline">
+                        <input type="radio" name="optradio" value="Yearly">  This Year
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-12">
+                <input class="form-control text-box single-line" id="Description" name="Description" type="text" value="" autocomplete="off">
+            </div>
+        </div>
+
+
+
+        <div class="form-group">
+          
+            <label class="control-label col-md-2" for="DateToBeAchieved">Date To Be Achieved</label>
+            <div class="col-md-12">
+                <input class="form-control text-box single-line" id="DateToBeAchieved" type="text" disabled value="@DateTime.Now.ToString("dd-MMM-yyyy")">
+                <input type="hidden" id="dateachieved" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-12">
+                <div class="pull-right">
+                    <input type="button" value="Create" class="btn btn-fill btn-primary btn-sm" id="AddGoal" />
+                </div>
+            </div>
+        </div>
+    </div>
+    }
+
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>
+</div>
+
+
+@section scripts{
+
+<script src="~/Scripts/date.js"></script>
+
+    <script>
+        $("input:radio[name=optradio]").on('change', function () {
+            var typeOfGoal = $("input:radio[name=optradio]:checked").val();
+            var dateNow = new Date.today().clearTime();
+
+            if (typeOfGoal == "Daily") {
+                $("#DateToBeAchieved").val(dateNow.toString("dd-MMM-yyyy"));
+                
+            }
+            else if (typeOfGoal == "Monthly") {
+                $("#DateToBeAchieved").val(dateNow.moveToLastDayOfMonth().toString("dd-MMM-yyyy"))
+                console.log(dateNow.moveToLastDayOfMonth().toString("dd-MMM-yyyy"));
+                //$("#DateToBeAchieved").val();
+            }
+            else if (typeOfGoal == "Yearly") {
+                var dt = new Date(dateNow);
+
+                var getLastDayOfYear = dt.next().december().moveToLastDayOfMonth().toString("dd-MMM-yyyy");
+                $("#DateToBeAchieved").val(getLastDayOfYear);
+            }
+        }) 
+
+
+        $("#AddGoal").click(function () {
+
+            var Description = $("#Description").val();
+            var typeGoal = $("input:radio[name=optradio]:checked").val();
+            var DateToBeAchieved = $("#DateToBeAchieved").val();
+
+            if (Description == "" || Description == " " || Description == null) {
+                ShowErrorNotificaton("top", "right");
+            }
+            else {
+
+
+                var model = {
+                    Description: Description,
+                    typeGoal: typeGoal,
+                    DateToBeAchieved: DateToBeAchieved
+                };
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Goals/Create",
+                    data: model,
+                    beforeSend: function () {
+                        $.notify("Saving Goal Please wait", "info");
+                    },
+                    success: function (obj) {
+                        console.log(obj);
+                        $("#Description").val("");
+                        $.notify("Saving Successful", "success");
+
+                    },
+                    error: function (x, y, z) {
+                        console.log(x.responseText);
+                        ShowErrorNotificaton("top", "right");
+                    }
+                });
+            }
+
+        })
+
+
+        function ShowSuccessfulNotificaton(from, align) {
+            color = 2;
+            type = ['primary', 'info', 'success', 'warning', 'danger'];
+            $.notify({
+                icon: "nc-icon nc-app",
+                message: "<b>Saved Successfully</b>"
+
+            }, {
+                    type: type[color],
+                    timer: 800,
+                    placement: {
+                        from: from,
+                        align: align
+                    }
+                });
+        }
+
+        function ShowErrorNotificaton(from, align) {
+            color = 3;
+            type = ['primary', 'info', 'success', 'warning', 'danger'];
+            $.notify({
+                icon: "nc-icon nc-app",
+                message: "<b>Error Occured</b>"
+
+            }, {
+                    type: type[color],
+                    timer: 800,
+                    placement: {
+                        from: from,
+                        align: align
+                    }
+                });
+        }
+    </script>
+    
+    }
