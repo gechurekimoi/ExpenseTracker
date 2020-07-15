@@ -143,8 +143,6 @@
                 }
             })
 
-            console.log(MonthlyChartData);
-
             var myChart = Highcharts.chart('monthlyAnalysisChart', {
                 chart: {
                     plotBackgroundColor: null,
@@ -162,7 +160,7 @@
                 },
              
                 xAxis: {
-                    //categories: ['Apples', 'Bananas', 'Oranges']
+                 
                     categories: MonthlyChartData.categories
                 },
                 yAxis: {
@@ -174,13 +172,7 @@
                     name: 'Amount',
                     data: MonthlyChartData.data
                 }]
-                //series: [{
-                //    name: 'Jane',
-                //    data: [1, 0, 4]
-                //}, {
-                //    name: 'John',
-                //    data: [5, 7, 3]
-                //}]
+                
             });
 
             var yearlyData = {};
