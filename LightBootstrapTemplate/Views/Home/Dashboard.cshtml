@@ -57,11 +57,12 @@
     <div class="row">
         <div class="col-md-12">
             <div id="monthlyAnalysisChart" style="width:100%; min-height:500px; max-height:700px;">
-
+                <img src="~/img/tenor.gif" class="img-fluid my-auto mx-auto" />
             </div>
 
             <div id="yearlyAnalysisChart" style="width:100%; min-height:500px; max-height:700px;">
 
+                <img src="~/img/tenor.gif" class="img-fluid my-auto mx-auto" />
             </div>
         </div>
     </div>
@@ -93,101 +94,116 @@
     <script>
 
         $(document).ready(function () {
-            //GetMonthlyAnalysis();
+            GetMonthlyAnalysis();
+            GetYearlyExpenditureChart();
+           
         })
 
         var MonthlyChartData = {};
 
         function GetMonthlyAnalysis() {
+
             $.ajax({
                 type: 'GET',
                 url: '/Expenses/GetBarChartForMonthlyExpenseCategories',
                 data: 'json',
                 beforeSend: function () {
-
+                    console.log("GetBarChartForMonthlyExpenseCategories .. started");
                 },
                 success: function (obj) {
-                    MonthlyChartData = obj;
+                   
 
-                    return obj;
+                    if (obj != null) {
 
+                        console.log(obj);
+                        MonthlyChartData = obj;
+                        var myChart = Highcharts.chart('monthlyAnalysisChart', {
+                            chart: {
+                                plotBackgroundColor: null,
+                                plotBorderWidth: null,
+                                plotShadow: false,
+                                type: 'bar'
+                            },
+                            title: {
+                                text: 'Monthly Expense Comparison'
+                            },
+                            accessibility: {
+                                point: {
+                                    valueSuffix: '%'
+                                }
+                            },
+
+                            xAxis: {
+
+                                categories: MonthlyChartData.categories
+                            },
+                            yAxis: {
+                                title: {
+                                    text: 'Amount Spent'
+                                }
+                            },
+                            series: [{
+                                name: 'Amount',
+                                data: obj.data
+                            }]
+
+                        });
+                    }
 
                 },
                 error: function (x, y, z) {
                     console.log(x.responseText);
                     return x.responseText;
+                },
+                complete: function () {
+                    console.log("GetBarChartForMonthlyExpenseCategories .. finished");
                 }
             })
+
+           
         }
 
-        document.addEventListener('DOMContentLoaded', function () {
 
-            $.ajax({
-                type: 'GET',
-                url: '/Expenses/GetBarChartForMonthlyExpenseCategories',
-                data: 'json',
-                async: false,
-                beforeSend: function () {
-
-                },
-                success: function (obj) {
-                    MonthlyChartData = obj;
-
-                    return obj;
-
-
-                },
-                error: function (x, y, z) {
-                    console.log(x.responseText);
-                    return x.responseText;
-                }
-            })
-
-            var myChart = Highcharts.chart('monthlyAnalysisChart', {
-                chart: {
-                    plotBackgroundColor: null,
-                    plotBorderWidth: null,
-                    plotShadow: false,
-                    type: 'bar'
-                },
-                title: {
-                    text: 'Monthly Expense Comparison'
-                },
-                accessibility: {
-                    point: {
-                        valueSuffix: '%'
-                    }
-                },
-             
-                xAxis: {
-                 
-                    categories: MonthlyChartData.categories
-                },
-                yAxis: {
-                    title: {
-                        text: 'Amount Spent'
-                    }
-                },
-                series: [{
-                    name: 'Amount',
-                    data: MonthlyChartData.data
-                }]
-                
-            });
-
+        function GetYearlyExpenditureChart() {
             var yearlyData = {};
             $.ajax({
                 type: 'GET',
                 url: '/Expenses/GetChartDataForMonthsOfTheYear',
                 data: 'json',
-                async: false,
+               
                 beforeSend: function () {
 
                 },
                 success: function (obj) {
-                    yearlyData = obj;
 
-                    return obj;
+
+                    if (obj != null) {
+                        yearlyData = obj;
+
+                        var myChart2 = Highcharts.chart('yearlyAnalysisChart', {
+                            chart: {
+                                type: 'line'
+                            },
+                            title: {
+                                text: 'Yearly Expense Comparison'
+                            },
+                            xAxis: {
+                                //categories: ['Apples', 'Bananas', 'Oranges']
+                                categories: yearlyData.categories
+                            },
+                            yAxis: {
+                                title: {
+                                    text: 'Amount Spent'
+                                }
+                            },
+                            series: [{
+                                name: 'Amount',
+                                data: yearlyData.data
+                            }]
+
+                        });
+                    }
+                  
 
 
                 },
@@ -198,68 +214,40 @@
             })
 
 
-            var myChart2 = Highcharts.chart('yearlyAnalysisChart', {
-                chart: {
-                    type: 'line'
-                },
-                title: {
-                    text: 'Yearly Expense Comparison'
-                },
-                xAxis: {
-                    //categories: ['Apples', 'Bananas', 'Oranges']
-                    categories: yearlyData.categories
-                },
-                yAxis: {
-                    title: {
-                        text: 'Amount Spent'
-                    }
-                },
-                series: [{
-                    name: 'Amount',
-                    data: yearlyData.data
-                }]
-
-            });
-
-        });
-
-
-
-
-
-
-        function LoadMonthlyAnalysisChart() {
-
+            
         }
 
-        $("#checkExpenses").click(function () {
-
-            var year = $("#selectYear").val();
-            var month = $("#selectMonth").val();
-
-            var totalExpenses = { year: year, month: month };
-
-            $.ajax({
-                type: 'POST',
-                url: '/Expenses/GetTotalExpenses',
-                data: totalExpenses,
-                beforeSend: function () {
-
-                    $("#loader").show();
-                },
-                success: function (obj) {
-
-                    console.log(obj);
-                    $("#amountSpent").empty();
-                    $("#amountSpent").html(obj);
-                    $("#result").show();
-                    $("#loader").hide();
-
-                },
-                error: function () { }
-            })
+      
 
 
-        })
+        //$("#checkExpenses").click(function () {
+
+        //    var year = $("#selectYear").val();
+        //    var month = $("#selectMonth").val();
+
+        //    var totalExpenses = { year: year, month: month };
+
+        //    $.ajax({
+        //        type: 'POST',
+        //        url: '/Expenses/GetTotalExpenses',
+        //        data: totalExpenses,
+        //        beforeSend: function () {
+
+        //            $("#loader").show();
+        //        },
+        //        success: function (obj) {
+
+        //            console.log(obj);
+        //            $("#amountSpent").empty();
+        //            $("#amountSpent").html(obj);
+        //            $("#result").show();
+        //            $("#loader").hide();
+
+        //        },
+        //        error: function () { }
+        //    })
+
+
+        //})
     </script>
 }
